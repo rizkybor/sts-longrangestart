@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#1874a5">
+  <title>STS Long Range Start</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="nav-inner">
+      <div class="brand">
+        <img src="assets/logo-sts-white.png" alt="">
+        <span class="brand-text">
+          <strong>STS Long Range Start</strong>
+          <small>Sustainable Timing System</small>
+        </span>
+      </div>
+      <div class="nav-right">
+        <span id="navServer" class="conn off" title="Server"><i data-icon="wifiOff"></i></span>
+        <span id="navTiming" class="conn off" title="sts-timingsystem"><i data-icon="laptop"></i></span>
+        <span id="navClockWrap" class="nav-clock" title="Jam server (tersinkron)">
+          <i data-icon="clock"></i><span id="navClock" class="mono">--:--:--</span><small id="navClockTag" class="nav-clock__tag">SERVER</small>
+        </span>
+      </div>
+    </div>
+  </header>
+
+  <main class="page">
+    <div class="page-head">
+      <div class="grow">
+        <div class="crumbs"><span id="crumbEvent">Event belum diisi</span></div>
+        <h1 class="page-title">Garis Start</h1>
+        <p class="page-subtitle">Seiko PS-77 → Buffer-Timer-Start sts-timingsystem</p>
+      </div>
+      <span id="deviceChip" class="chip chip-brand"><i data-icon="flag"></i><span></span></span>
+    </div>
+
+    <section class="stat-strip">
+      <div id="statServer" class="stat-card stat-card--neutral">
+        <span class="stat-card__icon"><i data-icon="link"></i></span>
+        <div><div class="stat-card__value">–</div><div class="stat-card__label">Server</div></div>
+      </div>
+      <div id="statTiming" class="stat-card stat-card--neutral">
+        <span class="stat-card__icon"><i data-icon="laptop"></i></span>
+        <div><div class="stat-card__value">–</div><div class="stat-card__label">Timing System</div></div>
+      </div>
+      <div id="statClock" class="stat-card stat-card--neutral">
+        <span class="stat-card__icon"><i data-icon="clock"></i></span>
+        <div><div class="stat-card__value">–</div><div class="stat-card__label">Sinkron Jam</div></div>
+      </div>
+      <div id="statQueue" class="stat-card stat-card--neutral">
+        <span class="stat-card__icon"><i data-icon="pending"></i></span>
+        <div><div class="stat-card__value">0</div><div class="stat-card__label">Antrean</div></div>
+      </div>
+    </section>
+
+    <!-- Panel gelap seperti OperationTeamPanel sts-timingsystem -->
+    <section class="race-window start-panel">
+      <div class="race-toolbar">
+        <span class="chip-dark">Race <b id="lblRace">–</b></span>
+        <span class="chip-dark">Wave / Heat <b id="lblWave">–</b></span>
+        <span class="spacer"></span>
+        <span id="armState" class="status-pill status-muted"><span class="dot"></span><span>DISARMED</span></span>
+      </div>
+
+      <div class="buffer-title">Buffer-Timer-Start</div>
+      <div id="clockLabel" class="clock-label">Jam Long Range (basis Buffer-Timer-Start)</div>
+      <div id="lastTime" class="start-readout">--:--:--.---</div>
+      <div id="calChips" class="cal-chips"></div>
+      <div id="lastInfo" class="start-info">Belum ada start</div>
+
+      <div class="start-actions">
+        <button id="btnArm" class="btn btn-lg btn-arm"><i data-icon="arm"></i><span>ARM</span></button>
+        <button id="btnManual" class="btn btn-lg btn-fire" title="Cadangan bila antarmuka USB bermasalah"><i data-icon="touch"></i><span>START MANUAL</span></button>
+      </div>
+      <div class="start-actions small">
+        <button id="btnRecall" class="btn btn-sm btn-dark-warn" disabled><i data-icon="warning"></i>Recall / False Start</button>
+        <button id="btnNextWave" class="btn btn-sm btn-dark"><i data-icon="next"></i>Wave berikutnya</button>
+      </div>
+    </section>
+
+    <div class="grid-main">
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title"><i data-icon="usb"></i>Antarmuka PS-77</h2>
+          <span id="inputPill" class="status-pill status-muted"><span class="dot"></span><span>–</span></span>
+        </div>
+        <div class="field">
+          <label class="field-label" for="cfgInputMode">Mode input</label>
+          <select id="cfgInputMode" class="input">
+            <option value="hid">USB HID: keyboard / foot-switch / Pro Micro</option>
+            <option value="serial-signal">USB Serial: sinyal kontak (CTS/DSR/DCD/RI)</option>
+            <option value="serial-data">USB Serial: data teks (Arduino)</option>
+          </select>
+        </div>
+        <div id="hidOpts" class="field mt">
+          <label class="field-label" for="cfgHotkey">Tombol trigger</label>
+          <div class="input-group"><i data-icon="keyboard"></i><input id="cfgHotkey" class="input" value="F9"></div>
+          <span class="field-help">Klik kolom, lalu tembakkan pistol / tekan foot-switch untuk merekam tombolnya.</span>
+        </div>
+        <div id="serialOpts" class="mt">
+          <div class="grid-2">
+            <div class="field">
+              <label class="field-label" for="cfgBaud">Baud rate</label>
+              <input id="cfgBaud" class="input" type="number" value="115200">
+            </div>
+            <div class="field" id="signalField">
+              <label class="field-label" for="cfgSignal">Sinyal dipantau</label>
+              <select id="cfgSignal" class="input">
+                <option value="clearToSend">CTS</option>
+                <option value="dataSetReady">DSR</option>
+                <option value="dataCarrierDetect">DCD</option>
+                <option value="ringIndicator">RI</option>
+              </select>
+            </div>
+          </div>
+          <p id="serialHint" class="field-help"></p>
+          <div class="row mt">
+            <button id="btnConnect" class="btn btn-primary"><i data-icon="usb"></i>Hubungkan perangkat</button>
+            <button id="btnDisconnect" class="btn" disabled><i data-icon="linkOff"></i>Putuskan</button>
+          </div>
+        </div>
+        <p id="inputStatus" class="muted mt">–</p>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <h2 class="card-title"><i data-icon="settings"></i>Pengaturan</h2>
+        </div>
+        <div class="grid-2">
+          <div class="field span-2">
+            <label class="field-label" for="cfgServerUrl">URL server Long Range Start</label>
+            <input id="cfgServerUrl" class="input" placeholder="https://start.domain.com" inputmode="url">
+          </div>
+          <div class="field span-2">
+            <label class="field-label" for="cfgToken">Token starter</label>
+            <input id="cfgToken" class="input" type="password" autocomplete="off">
+          </div>
+          <div class="field span-2">
+            <label class="field-label" for="cfgEvent">Nama event</label>
+            <input id="cfgEvent" class="input" placeholder="Kejurnas Arung Jeram 2026">
+          </div>
+          <div class="field">
+            <label class="field-label" for="cfgRace">Race</label>
+            <input id="cfgRace" class="input" placeholder="DRR Putra">
+          </div>
+          <div class="field">
+            <label class="field-label" for="cfgWave">Wave / Heat</label>
+            <input id="cfgWave" class="input" type="number" min="1" value="1">
+          </div>
+          <div class="field">
+            <label class="field-label" for="cfgDevice">Nama perangkat</label>
+            <input id="cfgDevice" class="input" placeholder="START-1">
+          </div>
+          <div class="field">
+            <label class="field-label" for="cfgLockout">Lockout (ms)</label>
+            <input id="cfgLockout" class="input" type="number" min="0" value="3000">
+          </div>
+        </div>
+        <label class="check mt"><input id="cfgRequireArm" type="checkbox" checked> Wajib ARM sebelum start</label>
+        <div class="row mt">
+          <button id="btnSave" class="btn btn-primary"><i data-icon="save"></i>Simpan</button>
+          <button id="btnSync" class="btn"><i data-icon="refresh"></i>Sinkron jam</button>
+          <button id="btnTestSend" class="btn"><i data-icon="send"></i>Kirim TEST</button>
+        </div>
+        <div id="syncStatus" class="alert alert-info" hidden></div>
+      </section>
+    </div>
+
+    <section class="card">
+      <div class="card-head">
+        <h2 class="card-title"><i data-icon="history"></i>Riwayat Start</h2>
+        <button id="btnRetryAll" class="btn btn-sm"><i data-icon="refresh"></i>Kirim ulang</button>
+        <button id="btnExport" class="btn btn-sm"><i data-icon="download"></i>CSV</button>
+        <button id="btnClearLog" class="btn btn-sm btn-danger"><i data-icon="del"></i>Hapus</button>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>Waktu Start</th><th>Race / Wave</th><th>Jenis</th><th>Sumber</th><th>Status</th><th></th></tr></thead>
+          <tbody id="logBody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">©<span id="year"></span> STS Long Range Start with Jendela Cakra Digital. All rights reserved.</footer>
+
+  <div id="flash" class="flash"></div>
+  <div id="toasts" class="toasts"></div>
+  <script src="app.js" type="module"></script>
+</body>
+</html>

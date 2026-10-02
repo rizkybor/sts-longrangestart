@@ -1,0 +1,17 @@
+{
+  "name": "sts-longrangestart",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Trigger start Seiko PS-77 dari HP/Laptop ke buffer start sts-timingsystem",
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.mjs",
+    "secrets": "node scripts/secrets.mjs"
+  },
+  "dependencies": {
+    "socket.io": "^4.8.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

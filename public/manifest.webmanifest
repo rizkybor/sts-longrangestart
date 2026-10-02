@@ -1,0 +1,14 @@
+{
+  "name": "STS Long Range Start",
+  "short_name": "LR Start",
+  "description": "Trigger start Seiko PS-77 ke Buffer-Timer-Start sts-timingsystem",
+  "start_url": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#f4f7fb",
+  "theme_color": "#1874a5",
+  "icons": [
+    { "src": "assets/logo-sts-blue.png", "sizes": "160x160", "type": "image/png", "purpose": "any" },
+    { "src": "favicon.png", "sizes": "64x64", "type": "image/png" }
+  ]
+}

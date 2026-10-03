@@ -81,7 +81,7 @@ Waktu resmi di sts-timingsystem mengikuti **jam RaceTime2**. Konversinya:
 3. **Laptop → RaceTime2**:
    - Bila RaceTime2 mengirim frame START **berwaktu** (heartbeat), offsetnya dihitung otomatis. Badge menampilkan "jam RaceTime2".
    - Bila frame-nya *bare* (seperti di lapangan saat ini), dipakai **jam lokal laptop**. Badge menampilkan "jam laptop".
-   - **Kalibrasi manual** (paling diutamakan): klik badge **Long Range Start** di sts-timingsystem. Ada jam berjalan untuk dibandingkan dengan RaceTime2, tombol **SET** ke waktu RaceTime2, trim ±ms, dan *Hitung ulang* start terakhir. Kalibrasi tersimpan setelah aplikasi dibuka ulang. Detailnya di `app/LONGRANGE.md`.
+   - **Kalibrasi manual** (paling diutamakan): klik badge **Long Range Start** di sts-timingsystem. Kalibrasi ini **tersinkron dengan STS Photo Finish**: kalibrasi terbaru di salah satu aplikasi berlaku untuk keduanya (chip *Dari Photo Finish* bila asalnya dari sana). Ada jam berjalan untuk dibandingkan dengan RaceTime2, tombol **SET** ke waktu RaceTime2, trim ±ms, dan *Hitung ulang* start terakhir. Kalibrasi tersimpan setelah aplikasi dibuka ulang. Detailnya di `app/LONGRANGE.md`.
 
    sts-timingsystem mengirim status jam kalibrasinya ke server (`timing:clock-state`). Karena itu **semua waktu di aplikasi garis start memakai basis RaceTime2 hasil kalibrasi**:
    - **Panel Buffer-Timer-Start** menampilkan **Jam Long Range yang berjalan**, sama dengan jam di modal kalibrasi sts-timingsystem. Di bawahnya ada chip kalibrasi: basis, trim, selisih dengan server, waktu kalibrasi, dan ketelitian.

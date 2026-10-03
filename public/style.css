@@ -206,6 +206,7 @@ body {
 .cal-chip--racetime { background: var(--ok); border-color: var(--ok); color: #fff; }
 .cal-chip--laptop, .cal-chip--warn { background: var(--warn); border-color: var(--warn); color: #1f1f1f; }
 .cal-chip--start { background: var(--bad); border-color: var(--bad); color: #fff; }
+.cal-chip--sync { background: #0e7490; border-color: #0e7490; color: #fff; }
 
 /* ===== Modal konfirmasi (modal.js) — gaya sts-photofinish Modal.vue ===== */
 body.mdl-lock { overflow: hidden; }

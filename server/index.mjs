@@ -286,6 +286,8 @@ io.on('connection', (socket) => {
       revision: Number.isInteger(st.revision) ? st.revision : 0,
       updatedAt: typeof st.updatedAt === 'string' ? st.updatedAt.slice(0, 40) : null,
       note: typeof st.note === 'string' ? st.note.slice(0, 80) : null,
+      // "photofinish" = kalibrasi terakhir dibuat di STS Photo Finish (disinkronkan timing)
+      origin: st.origin === 'photofinish' ? 'photofinish' : 'longrange',
       at: Date.now(),
     };
     if (!timingClock || timingClock.revision !== next.revision || Math.abs(timingClock.todShiftMs - next.todShiftMs) > 1) {

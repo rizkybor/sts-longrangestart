@@ -121,7 +121,7 @@ function updateTimingClock(tc) {
   const changed = !timingClock || timingClock.todShiftMs !== tc.todShiftMs || timingClock.revision !== tc.revision;
   timingClock = {
     todShiftMs: tc.todShiftMs, basis: tc.basis, trimMs: tc.trimMs, revision: tc.revision,
-    updatedAt: tc.updatedAt || null, note: tc.note || null, at: new Date().toISOString(),
+    updatedAt: tc.updatedAt || null, note: tc.note || null, origin: tc.origin || 'longrange', at: new Date().toISOString(),
   };
   safeSet(TIMING_CLOCK_KEY, JSON.stringify(timingClock));
   if (changed) {
@@ -715,6 +715,9 @@ function renderCalibration() {
   if (timingClock.updatedAt) {
     chips.push(chip('', `Dikalibrasi ${timeOfDay(Date.parse(timingClock.updatedAt))} · ${fmtAgo(timingClock.updatedAt)}`,
       `Revisi ${timingClock.revision}${timingClock.note ? ` · ${timingClock.note}` : ''}`));
+  }
+  if (timingClock.origin === 'photofinish') {
+    chips.push(chip('cal-chip--sync', 'Dari Photo Finish', 'Kalibrasi terakhir dibuat di STS Photo Finish dan diikuti otomatis'));
   }
   if (clock.synced) chips.push(chip('', `Server ±${Math.ceil(clock.rttMs / 2)} ms`, 'Ketelitian sinkron jam HP ke server'));
   if (!net.timingClockLive) chips.push(chip('cal-chip--warn', 'Timing offline · kalibrasi terakhir'));

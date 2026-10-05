@@ -1,0 +1,34 @@
+# Blueprint Render — Dashboard → New → Blueprint → pilih repo ini.
+# Secret (sync: false) diisi manual saat membuat Blueprint; pakai nilai yang sama
+# dengan .env lokal agar cocok dengan sts-timingsystem (atau buat baru: npm run secrets).
+services:
+  - type: web
+    name: sts-longrangestart
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/time
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: LRS_HOST
+        value: 0.0.0.0
+      - key: LRS_STARTER_TOKEN
+        sync: false
+      - key: LRS_TIMING_TOKEN
+        sync: false
+      - key: LRS_HMAC_SECRET
+        sync: false
+      - key: LRS_CORS_ORIGINS
+        value: "*"
+      - key: LRS_REDELIVER_HOURS
+        value: "12"
+    # Plan free tidak punya disk: data/starts.jsonl hilang tiap redeploy/restart.
+    # Agar riwayat & kirim ulang bertahan, ganti plan ke starter lalu aktifkan:
+    # disk:
+    #   name: lrs-data
+    #   mountPath: /var/data
+    #   sizeGB: 1
+    # dan tambahkan env LRS_DATA_DIR=/var/data

@@ -28,7 +28,7 @@ loadEnv(path.join(root, '.env'));
 
 const cfg = {
   host: process.env.LRS_HOST || '0.0.0.0',
-  port: Number(process.env.LRS_PORT) || 4200,
+  port: Number(process.env.PORT || process.env.LRS_PORT) || 4200, // PORT diisi otomatis oleh Render/PaaS
   starterToken: process.env.LRS_STARTER_TOKEN || '',
   timingToken: process.env.LRS_TIMING_TOKEN || '',
   hmacSecret: process.env.LRS_HMAC_SECRET || '',
